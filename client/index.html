@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyRecipe</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="scripts/index.js"></script>
+    <script src="scripts/login.js"></script>
+</head>
+
+<body>
+    <!-- Modal -->
+    <div class="modal fade" id="loginRegister" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authTitle"></h5>
+                    <!-- this is the button to X out.  -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="authFields">authfield</div>
+                <div id="errorMsgValid"></div>
+                <div id="errorMsg"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="oppositeAuth"></button>
+                    <button type="button" class="btn btn-primary" id="saveAuth">take me to registration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER-->
+    <header class="navbar navbar-expand-lg mb-5">
+        <div class="container-fluid">
+            <nav class="navbar">
+                <a id="navHome" class="navbar-brand h-link mt-3 active" aria-current="page" href="#">MyRecipe</a>
+                <ul class="navbar-nav align-items-end">
+                    <li id="navUser" class="nav-item">
+                        <a id="navLinkUser" class="nav-link h-link" href="#">My Recipes</a>
+                    </li>
+                    <li id="navNew" class="nav-item">
+                        <a id="navLinkNew" class="nav-link h-link" href="#" onclick="">New Recipe</a>
+                    </li>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginRegister"
+                        id="btnLogin">
+                        Login
+                    </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginRegister"
+                        id="btnRegister">
+                        Register
+
+                    </button>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="loginRegister" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="authTitle"></h5>
+                        <!-- this is the button to X out.  -->
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="authFields">authfield</div>
+                    <div id="errorMsgValid"></div>
+                    <div id="errorMsg"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="oppositeAuth"></button>
+                        <button type="button" class="btn btn-primary" id="saveAuth">take me to registration</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <input type="text" name="search">
+        </div>
+        <div class="row">
+        </div> -->
+
+        <!-- RECIPE GRID HEADER -->
+        <div id="viewRecipeGrid">
+            <h1 class="text-center">All Recipes</h1>
+
+            <div class="navbar-expand mb-3">
+                <ul class="navbar-nav justify-content-evenly">
+
+                    <!-- NOT DONE: TAG FILTERS -->
+
+                    <!-- <li class="nav-item">
+                        search tag
+                    </li>
+                    <li class="nav-item">
+                        search tag
+                    </li>
+                    <li class="nav-item">
+                        search tag
+                    </li>
+                    <li class="nav-item">
+                        search tag
+                        
+                    </li>  -->
+                </ul>
+            </div>
+
+            <!-- RECIPE GRID -->
+            <div id="recipeList" class="row m-2">
+            </div>
+        </div>
+
+
+        <!-- RECIPE SINGLE PAGE -->
+        <div id="viewRecipeSingle">
+
+
+            <!-- ADD/EDIT/VIEW BUTTONS -->
+
+            <div class="row mb-2">
+                <div class="col-3 offset-7 text-end">
+                    <button id="btnOpenEdit" class="btn rounded">Edit this recipe</button>
+                    <button id="btnView" class="btn rounded">View published recipe</button>
+                </div>
+                <div class="col-2">
+                    <button id="btnOpenAdd" class="btn rounded">New recipe</button>
+                </div>
+            </div>
+
+            <div class="container w-75 text-center">
+
+                <!-- RECIPE TOP-->
+
+                <div id="recipe" class="">
+                    <div id="recipeContainer" class="container rounded-5 text-start p-5 mt-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <img id="recipeImg" class="rounded-5 border-1 p-0 w-100 h-100 object-fit-cover"
+                                    src="images/food.png" height="300" alt="Recipe photo">
+                            </div>
+                            <div class="col-7">
+                                <h1 id="title"></h1>
+                                <div class="row">
+                                    <div class="col">
+                                        Published: <span id="recipeDate"></span>
+                                    </div>
+                                    <div class="col">
+                                        <img id="imgComment" src="images/chat_bubble.png" width="15"
+                                            alt="Comment symbol">
+                                        <span id="commentCount">0</span> comments
+                                    </div>
+                                    <div class="col-12 my-2">
+                                        <img id="authorImg" src="images/user_avatar.png" width="30" alt="User Avatar">
+                                        <span id="author"></span><br>
+                                        @
+                                        <span id="authUsername"></span>
+                                    </div>
+                                    <div class="p-3 fs-4">
+                                        <p id="description"></p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <img src="images/timer.png" alt="timer symbol" width="12" class="imgTimer">
+                                            Total time:
+                                            <span id="cookTimeHr"></span>hrs<span id="hrsPlural"></span>
+                                            <span id="cookTimeMin"></span>mins
+                                        </div>
+                                        <div class="col">
+                                            Yield: <span id="yield"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="tags"></div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW RECIPE CONTENT -->
+
+                        <div id="ingredients" class="container rounded-5 border-1 p-3 mt-3">
+                            <h3>Ingredients</h3>
+                            <ul id="ingList">
+                                <!-- <li>100g ingredient</li>
+                                <li>1/2 cup ingredient</li>
+                                <li>1 tsp ingredient</li> -->
+                            </ul>
+                        </div>
+                        <div id="instructions" class="container rounded-5 border-1 p-3 mt-3">
+                            <h3>Intructions</h3>
+                            <ol id="stepList">
+                                <!-- <li>Step 1</li>
+                                <li>Step 2</li>
+                                <li>Step 3</li> -->
+                            </ol>
+                        </div>
+                        <div id="notes" class="container rounded-5 border-1 p-3 mt-3">
+                            <h3>Notes</h3>
+                            <ol id="noteList">
+                                <!-- <li>Note 1</li>
+                                <li>Note 2</li>
+                                <li>Note 3</li> -->
+                            </ol>
+
+
+                        </div>
+                        <button id="btnUpdateNotes" class="btn rounded m-3">Need to add more notes to this
+                            recipe?</button>
+                        <button id="btnChangePrivacy" class="btn rounded m-3">Change privacy</button>
+                        <div id="notesPatchForm">
+                            <p>Additional Notes:</p>
+                            <div id="notePatchList">
+
+                                <textarea id="tfNotePatch1" class="w-75"></textarea>
+                            </div>
+                            <button id="btnAddNotePatch" class="btn rounded ms-3">Add Note</button>
+                            <button id="btnSendNotePatch" class="btn rounded ms-3">Save to recipe</button>
+                        </div>
+                        <div id="changePrivacy">
+                            <p>Recipe privacy settings:</p>
+                            <div>
+                                <input type="radio" name="radioPatch" id="radioPatchPub" value="Public" checked>
+                                <label for="radioPub">Public</label>
+                                <input type="radio" name="radioPatch" id="radioPatchPriv" value="Private">
+                                <label for="radioPriv">Private</label>
+                            </div>
+                            <button id="btnPrivacyPatch" class="btn rounded ms-3">Save recipe settings</button>
+                        </div>
+
+
+
+                    </div>
+
+                    <!-- VIEW COMMENTS -->
+
+                    <div class="text-start mt-5">
+                        <div id="recipe_comments">
+                            <h3>Comments</h3>
+                            <div id="comments">
+                                <div class="userComment row rounded-5 border-1 p-3 my-3">
+                                    <div class="row justify-content-between">
+                                        <div class="col">
+                                            No comments yet!
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- COMMENT FORM -->
+
+                            <h4 class="mt-5">Add a Comment</h4>
+                            <form id="formComment" action="/api/comments/" method="post">
+                                <div id="commentBuilder" class="row rounded-5 border-1 p-3 my-2">
+
+                                    <div class="row text-center">
+                                        <textarea id="tfComment" class="form-control rounded-4 mb-2"
+                                            rows="3"></textarea>
+                                    </div>
+                                    <div id="currentUser" class="col">
+                                        <img class="userImg" id="currentUserImg" src="images/user_avatar.png" width="30"
+                                            alt="Your Avatar">
+                                        @
+                                        <span id="currentUsername"></span>
+                                    </div>
+                                    <div class="col text-end">
+                                        <button id="btnComment" class="btn rounded">submit</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECIPE EDITOR -->
+
+                <div id="recipeEdit" class="text-start p-5 container rounded-5">
+                    <div id="formRecipe">
+                        <h3 id="editorHeading">Recipe Editor</h3>
+                        <div id="titleEdit" class="my-3">
+                            <p>
+                                <span class="form-label">Title:</span>
+                                <input type="text" name="tfTitle" id="tfTitle" class="w-75">
+                            </p>
+                        </div>
+                        <div id="descEdit" class="my-3">
+                            <p>
+                                <span class="form-label">Description:</span>
+                                <input type="text" name="tfDesc" id="tfDesc" class="w-75 input-lg">
+                            <p>
+                        </div>
+                        <div id="timeAndYield">
+                            <p>
+                                <span class="">Total time: </span>
+                                <input id="hrs" type="number" name="hrs" max="72" class="ms-3 me-2">
+                                <span class="form-label">hours</span>
+                                <input id="mins" type="number" name="mins" max="59" class="ms-3 me-2">
+                                <span class="form-label">minutes</span>
+                                <span class="form-label ms-5">Yield: </span>
+                                <input type="text" name="tfYield" id="tfYield">
+                            </p>
+                        </div>
+
+                        <!-- IMAGE UPLOAD -->
+
+                        <span class="form-label">Upload recipe photo: </span>
+                        <input type="file" class="form-control" id="imgUpload">
+
+                        <!-- INGREDIENTS -->
+
+                        <div id="ingEdit">
+                            <p>Ingredients</p>
+                            <div id="newIngList">
+
+                                <div id="ingredient1">
+                                    <!-- <span class="">Amount: </span>
+                                <input type="number" name="tfAmt1" id="tfAmt1" class="ms-3 me-2">
+                                <span class="">Ingredient name: </span>
+                                <input type="text" name="tfIng1" id="tfIng1" class="ms-3 me-2"> -->
+
+                                    <!-- <span class="">Units: </span>
+                                <input type="text" name="tfUnit1" id="tfUnit1" class="ms-3 me-2"> -->
+                                </div>
+
+
+                                <span class="">Ingredient name: </span>
+                                <input type="text" id="tfIng1" class="ms-3 me-2">
+                                <span class="form-label">Amount: </span>
+                                <input type="text" id="tfAmt1" class="ms-3 me-2">
+                            </div>
+                            <button id="btnAddIng" class="btn rounded ms-3">Add Ingredient</button>
+                        </div>
+
+                        <!-- INSTRUCTIONS -->
+
+                        <div id="stepsEdit">
+                            <p>Intructions:</p>
+                            <div id="newStepList">
+
+                                <input type="text" name="tfStep1" class="w-75 input-lg">
+                            </div>
+                            <button id="btnAddStep" class="btn rounded ms-3">Add Step</button>
+                        </div>
+
+                        <!-- NOTES -->
+
+                        <div id="notesEdit">
+                            <p>Notes:</p>
+                            <div id="newNoteList">
+                                <input type="text" id="tfNote1" class="w-75 input-lg">
+                            </div>
+                            <button id="btnAddNote" class="btn rounded ms-3">Add Note</button>
+                        </div>
+
+                        <!-- TAGS -->
+
+                        <div id="tagsEdit">
+                            <p>Tags:</p>
+                            <div id="newTagList">
+
+                                <input type="text" name="tfTag1" class="">
+                            </div>
+                            <button id="btnAddTag" class="btn rounded ms-3">Add Tag</button>
+                        </div>
+
+                        <!-- PUBLIC/PRIVATE -->
+
+                        <div>
+                            <input type="radio" name="radioPubPriv" id="radioPub" value="Public" checked>
+                            <label for="radioPub">Public</label>
+                            <input type="radio" name="radioPubPriv" id="radioPriv" value="Private">
+                            <label for="radioPriv">Private</label>
+                        </div>
+
+                        <!-- SAVE/ADD -->
+
+                        <div class="row">
+                            <div id="saveRecipe" class="col">
+                                <button id="btnSaveRecipe" class="btn rounded">Save Recipe</button>
+                                <button id="btnPost" class="btn rounded">Publish Recipe</button>
+
+                            </div>
+
+                            <!-- DELETE -->
+                            <!-- TODO: where/when to show delete option  -->
+
+                            <div id="deleteRecipe" class="col tex">
+                                <button id="btnDelete" class="btn rounded">Delete Recipe</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- USER PAGE VIEWS -->
+        <div id="viewUserPage">
+            <div id="userProfileContainer" class="container rounded-5 text-start p-5 mt-3">
+                <div class="row">
+                    <div class="col-sm-5">
+                    </div>
+                    <div class="col-7">
+                        <h1 class=""></h1>
+                        <div class="row">
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                            </div>
+                            <div class="col-12 my-2">
+                                <img id="profileImg" src="images/user_avatar.png" width="30" alt="User Avatar">
+
+                                @
+                                <span id="profileUsername"></span>
+                            </div>
+                            <div class="p-3 fs-4">
+
+                            </div>
+
+                            <div class="row mb-2">
+                                <div class="col-3 offset-7 text-end">
+                                    <button id="btnEditProfile" class="btn rounded">Edit my profile info</button>
+                                    <button id="btnUpdateUserImg" class="btn rounded">Update my profile
+                                        image</button>
+                                </div>
+                                <div class="col-2">
+                                    <button id="btnAddFromProfile" class="btn rounded">Publish New recipe</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- VIEW USER RECIPES -->
+                <div id="viewUserRecipeGrid">
+                    <h1 class="text-center">My Recipes</h1>
+                </div>
+                <!-- EDIT USER PROFILE -->
+                <div id="profileEdit" class="text-start p-5 container rounded-5">
+                    <div id="formProfile">
+                        <h3>Profile Editor</h3>
+                        <div id="emailEdit" class="my-3">
+                            <p>
+                                <span class="form-label">Email:</span>
+                                <input type="text" name="tfEmailEdit" id="tfEmailEdit" class="w-75 input-lg">
+                            </p>
+                        </div>
+                        <div id="fullNameEdit" class="my-3">
+                            <p>
+                                <span class="form-label">Full name:</span>
+                                <input type="text" name="tfFullNameEdit" id="tfFullNameEdit" class="w-75 input-lg">
+                            <p>
+                        </div>
+
+                        <!-- IMAGE UPLOAD -->
+
+                        <span class="form-label">Update profile image: </span>
+                        <input type="file" class="form-control" id="imgUserUpload">
+
+                        <!-- SAVE -->
+
+                        <div class="row">
+                            <div id="saveUserProfile" class="col">
+                                <button id="btnSaveProfile" class="btn rounded">Save Changes</button>
+
+                            </div>
+
+                            <!-- DELETE -->
+                            <!-- TODO: where/when to show delete option  -->
+
+                            <div id="deleteUserProfile" class="col tex">
+                                <button id="btnDeleteUser" class="btn rounded">Delete my account</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <!-- 
+    <form id="uploadForm" action="/api/recipes" method="POST" enctype="multipart/form-data">
+        <input type="text" name="userId" placeholder="user id">
+        <input type="text" name="title" placeholder="title">
+        <input type="date" name="date" placeholder="date">
+        <input type="text" name="description" placeholder=" Description">
+        <input type="text" name="instructions" placeholder="Instructions">
+        <input type="text" name="notes" placeholder="notes">
+        <input type="text" name="ingredients" placeholder="ingredients">
+        <input type="text" name="status" placeholder="status">
+
+
+        <input type="file" name="image" accept="image/*">
+        <input type="text" name="tags" placeholder="tags">
+        <input type="text" name="isDeleted" placeholder="deleted">
+        <input type="text" name="cookTime" placeholder="cook time">
+
+
+        <button type="submit" id="btnSubmit">Submit</button>
+    </form> -->
+
+
+    <!-- 
+    ONLY TO TEST THE COMMENTS EHSAN
+ -->
+    <!-- 
+
+    <script src="index.js"></script>
+    <div id="ehsan_test">
+
+        <div class="table table-success">
+            <table id="listTable"></table>
+        </div>
+
+    </div>
+
+ -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="scripts/recipe.js"></script>
+    <script src="scripts/login.js"></script>
+
+    <title>MyRecipe</title>
+</head>
+
+<body>
+    <!-- Modal -->
+    <div class="modal fade" id="loginRegister" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authTitle"></h5>
+                    <!-- this is the button to X out.  -->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="authFields">authfield</div>
+                <div id="errorMsgValid"></div>
+                <div id="errorMsg"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="oppositeAuth"></button>
+                    <button type="button" class="btn btn-primary" id="saveAuth">take me to registration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER-->
+    <header class="navbar navbar-expand-lg mb-2">
+        <div class="container-fluid">
+            <nav class="navbar">
+                <a id="navTitle" class="navbar-brand h-link mt-3 active" aria-current="page"
+                    href="index.html">MyRecipe</a>
+                <ul class="navbar-nav align-items-end">
+                    <li class="nav-item">
+                        <a class="nav-link h-link" href="#">Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link h-link" href="#">New Recipe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link h-link" href="#">Sign up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link h-link" href="#">Log in</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div id="recipeSingleView">
+
+
+            <!-- ADD/EDIT/VIEW BUTTONS -->
+
+            <div class="row mb-2">
+                <div class="col-3 offset-7 text-end">
+                    <button id="btnOpenEdit" class="btn rounded">Edit this recipe</button>
+                    <button id="btnView" class="btn rounded">View published recipe</button>
+                </div>
+                <div class="col-2">
+                    <button id="btnOpenAdd" class="btn rounded">New recipe</button>
+                </div>
+            </div>
+
+            <div class="container w-75 text-center">
+
+                <!-- RECIPE TOP-->
+
+                <div id="recipe" class="">
+                    <div id="recipeContainer" class="container rounded-5 text-start p-5 mt-3">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <img id="recipeImg" class="rounded-5 border-1 p-0 w-100 object-fit-scale"
+                                    src="images/food.png" height="300px" alt="Recipe photo">
+                            </div>
+                            <div class="col-7">
+                                <h1 id="title">Recipe Title</h1>
+                                <div class="row">
+                                    <div id="recipeDate" class="col">
+                                        Published: 06/08/2023
+                                    </div>
+                                    <div id="commentCount" class="col">
+                                        <img id="imgComment" src="images/chat_bubble.png" width="15px"
+                                            alt="Comment symbol">
+                                        5 comments
+                                    </div>
+                                    <div id="author" class="col-12 my-2">
+                                        <img id="author_img" src="images/user_avatar.png" width="30px"
+                                            alt="User Avatar">
+                                        Author
+                                    </div>
+                                    <div id="description" class="p-3 fs-4">
+                                        <p><em>recipe description</em></p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <img src="images/timer.png" alt="timer symbol" width="12px"
+                                                class="imgTimer">
+                                            Total time:
+                                            <span id="cookTimeHr">1hr </span>
+                                            <span id="cookTimeMin">30min</span>
+                                        </div>
+                                        <div id="yield" class="col">
+                                            Yield: 4 servings
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VIEW RECIPE CONTENT -->
+
+                        <div id="ingredients" class="container rounded-5 border-1 p-3 mt-3">
+                            <h3>Ingredients</h3>
+                            <ul id="ingList">
+                                <li>100g ingredient</li>
+                                <li>1/2 cup ingredient</li>
+                                <li>1 tsp ingredient</li>
+                            </ul>
+                        </div>
+                        <div id="instructions" class="container rounded-5 border-1 p-3 mt-3">
+                            <h3>Intructions</h3>
+                            <ol id="stepList">
+                                <li>Step 1</li>
+                                <li>Step 2</li>
+                                <li>Step 3</li>
+                            </ol>
+                        </div>
+                        <div id="notes" class="container rounded-5 border-1 p-3 mt-3">
+                            <h3>Notes</h3>
+                            <ol id="noteList">
+                                <li>Note 1</li>
+                                <li>Note 2</li>
+                                <li>Note 3</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- VIEW COMMENTS -->
+
+                    <div class="text-start mt-5">
+                        <div id="recipe_comments">
+                            <h3>Comments</h3>
+                            <div id="comments">
+                                <div class="userComment row rounded-5 border-1 p-3 my-3">
+                                    <div class="row justify-content-between">
+                                        <div class="col">
+                                            <img class="userImg" id="commentUserImg" src="images/user_avatar.png"
+                                                width="30px" alt="User Avatar">
+                                            <span class="username">@user1</span>:
+                                        </div>
+                                        <div class="col text-end">
+                                            <span class="commentDate">06/08/2023</span>
+                                        </div>
+                                        <div class="row mt-3 px-5">
+                                            <span class="commentText">I love this recipe!</span>
+                                        </div>
+                                        <div class="row p-0 mt-3 align-items-center text-end">
+                                            <div class="col p-0">
+                                                <img id="imgHelpful" src="images/smiley.png" alt="smile icon"
+                                                    width="20px" class="">
+                                                <span id="commentHelpful">2</span> users found this comment helpful
+                                                <button id="addHelpful" class="btn rounded pill">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- COMMENT FORM -->
+
+                            <h4 class="mt-5">Add a Comment</h4>
+                            <form id="formComment" action="/api/comments/" method="post">
+                                <div id="commentBuilder" class="row rounded-5 border-1 p-3 my-2">
+
+                                    <div class="row text-center">
+                                        <textarea name="tfComment" id="tfComment" class="form-control rounded-4 mb-2"
+                                            rows="3"></textarea>
+                                    </div>
+                                    <div class="col">
+                                        <img class="userImg" id="currentUserImg" src="images/user_avatar.png"
+                                            width="30px" alt="Your Avatar">
+                                        <span id="currentUsername">@username</span>
+                                    </div>
+                                    <div class="col text-end">
+                                        <button id="addComment" class="btn rounded">submit</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECIPE EDITOR -->
+
+                <div id="recipeEdit" class="text-start p-5 container rounded-5">
+                    <form id="formRecipe" action="/api/recipes/" method="post">
+                        <h3 id="editorHeading">Recipe Editor</h3>
+                        <div id="titleEdit" class="my-3">
+                            <p>
+                                <label for="titleEdit" class="form-label">Title:</label>
+                                <input type="text" name="tfTitle" id="tfTitle" class="w-75">
+                            </p>
+                        </div>
+                        <div id="descEdit" class="my-3">
+                            <p>
+                                <label for="tfDesc" class="form-label">Description:</label>
+                                <input type="text" name="tfDesc" id="tfDesc" class="w-75 input-lg">
+                            <p>
+                        </div>
+                        <div id="timeAndYield">
+                            <p>
+                                <span class="">Total time: </span>
+                                <input id="hrs" type="number" name="hrs" max="72" class="ms-3 me-2">
+                                <label for="hrs" class="form-label">hours</label>
+                                <input id="mins" type="number" name="mins" max="59" class="ms-3 me-2">
+                                <label for="mins" class="form-label">minutes</label>
+                                <label for="tfYield" class="form-label ms-5">Yield: </label>
+                                <input type="text" name="tfYield" id="tfYield">
+                            </p>
+                        </div>
+
+                        <!-- IMAGE UPLOAD -->
+
+                        <label class="form-label" for="inmgUpload">Upload recipe photo: </label>
+                        <input type="file" class="form-control" id="imgUpload" />
+
+                        <!-- INGREDIENTS -->
+
+                        <div id="ingEdit">
+                            <p>Ingredients</p>
+                            <div id="ingredient1">
+                                <!-- <span class="">Amount: </span>
+                            <input type="number" name="tfAmt1" id="tfAmt1" class="ms-3 me-2">
+                            <span class="">Ingredient name: </span>
+                            <input type="text" name="tfIng1" id="tfIng1" class="ms-3 me-2"> -->
+
+                                <!-- <span class="">Units: </span>
+                            <input type="text" name="tfUnit1" id="tfUnit1" class="ms-3 me-2"> -->
+                            </div>
+
+                            <!-- Below is change I made (Mer) that conflicted with Alex's; will fix tomorrow (proper use of labels)-->
+
+                            <span class="">Ingredient name: </span>
+                            <input type="text" id="tfIng1" class="ms-3 me-2">
+                            <label for="tfAmt" class="form-label">Amount: </label>
+                            <input type="text" id="tfAmt1" class="ms-3 me-2">
+
+                            <button id="btnAddIng" class="btn rounded ms-3">Add Ingredient</button>
+                        </div>
+
+                        <!-- INSTRUCTIONS -->
+
+                        <div id="stepsEdit">
+                            <p>Intructions:</p>
+                            <input type="text" name="tfStep1" class="w-75 input-lg">
+                            <button id="btnAddStep" class="btn rounded ms-3">Add Step</button>
+                        </div>
+
+                        <!-- NOTES -->
+
+                        <div id="notesEdit">
+                            <p>Notes:</p>
+                            <input type="text" name="tfNote1" class="w-75 input-lg">
+                            <button id="btnAddNote" class="btn rounded ms-3">Add Note</button>
+                        </div>
+
+                        <!-- TAGS -->
+
+                        <div id="tagsEdit">
+                            <p>Tags:</p>
+                            <input type="text" name="tfTag1" class="">
+                            <button id="btnAddTag" class="btn rounded ms-3">Add Tag</button>
+                        </div>
+
+                        <!-- PUBLIC/PRIVATE -->
+
+                        <div>
+                            <input type="radio" name="radioPubPriv" id="radioPub" value="Public" checked>
+                            <label for="radioPub">Public</label>
+                            <input type="radio" name="radioPubPriv" id="radioPriv" value="Private">
+                            <label for="radioPriv">Private</label>
+                        </div>
+
+                        <!-- SAVE/ADD -->
+
+                        <div class="row">
+                            <div id="saveRecipe" class="col">
+                                <button id="btnSave" class="btn rounded">Save Recipe</button>
+                                <button id="btnPost" class="btn rounded">Publish Recipe</button>
+
+                            </div>
+
+                            <!-- DELETE -->
+                            <!-- TODO: where/when to show delete option  -->
+
+                            <div id="deleteRecipe" class="col tex">
+                                <button id="btnDelete" class="btn rounded">Delete Recipe</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer></footer>
+</body>
+
+</html>

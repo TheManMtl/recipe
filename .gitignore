@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.DS_Store
+Planning/.DS_Store
+~$MyRecipe.pptx

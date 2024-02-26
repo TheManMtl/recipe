@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to MyRecipe</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <!-- <script src="scripts/user.js"></script> -->
+    <script>
+        $(document).ready(function () {
+                // TEST session storage
+    alert("Session username: " + sessionStorage.getItem('username') +
+    "Session password: " +  sessionStorage.getItem('password') );
+
+            $("#loginButton").click(function () {
+                let username = $("input[name=username]").val();
+                let password = $("input[name=password]").val();
+                sessionStorage.setItem('username', username);
+                sessionStorage.setItem('password', password);
+                $("#authPane").hide();
+                $("#mainAppPane").show();
+                alert("Session username: " + sessionStorage.getItem('username') +
+    "Session password: " +  sessionStorage.getItem('password') );
+            });
+
+            $("#registerButton").click(function () {
+                var newUsername = $("input[name=newUsername]").val();
+                var newPass1 = $("input[name=newPass1]").val();
+                var newPass2 = $("input[name=newPass2]").val();
+                var email = $("input[name=email]").val();
+                var fullName = $("input[name=fullName]").val();
+
+                if (newPass1 != newPass2) {
+                    alert("Both passwords must be the same");
+                    return;
+                }
+
+                // get file input value and type
+                let file = $("#imgUpload").prop('files')[0];
+                let mimeTypeVal = file.type;
+
+                // read file
+                let reader = new FileReader();
+                reader.onload = function () {
+                    var userObj = { username: newUsername, email: email, fullName: fullName, password: newPass1, profileImg: btoa(reader.result), mimeType: mimeTypeVal };
+                    $("#waitForIt").show();
+                    // NOTE: if currId = 0 then adding, otherwise updating
+                    $.ajax({ // FIXME: escape special characters using urlencode
+                        url: "/api/users",
+                        type: "POST",
+                        dataType: "json",
+                        data: userObj,
+                        error: function (jqxhr, status, errorThrown) {
+                            alert("AJAX error: " + jqxhr.responseText);
+                        }
+                    }).done(function () {
+                        // TODO: alerts are obsolete, instead use HTML z-layer popup that shows up for 2-3 seconds
+                        alert("User registered successfully. You may now login.");
+                        $("input[name=newUsername]").val("");
+                        $("input[name=newPass1]").val("");
+                        $("input[name=newPass2]").val("");
+                    }).always(function () {
+                        $("#waitForIt").hide();
+                    });
+                };
+                reader.onerror = function () {
+                    console.log(reader.error);
+                    alert(reader.error);
+                };
+                //reader.readAsDataURL(file); // read file and trigger one of the above handlers
+                reader.readAsBinaryString(file);
+
+                return;
+            });
+
+
+            /*TEMPORARY: IMG UPDATE*/
+            $('#btnImg').click(function () {
+
+                // get file input value and type
+                let file = $("#imgUpdate").prop('files')[0];
+                let mimeTypeVal = file.type;
+
+                // read file
+                let reader = new FileReader();
+                reader.onload = function () {
+
+                    
+                    var userObj = { profileImg: btoa(reader.result), mimeType: mimeTypeVal };
+                    $("#waitForIt").show();
+                    // NOTE: if currId = 0 then adding, otherwise updating
+                    $.ajax({ // FIXME: escape special characters using urlencode
+                        url: "/api/users/img/" + sessionStorage.getItem('username'),
+                        headers: { 'x-auth-username': sessionStorage.getItem('username'), 'x-auth-password': sessionStorage.getItem('password') },
+                        type: "PATCH",
+                        dataType: "json",
+                        data: userObj,
+                        error: function (jqxhr, status, errorThrown) {
+                            alert("AJAX error: " + jqxhr.responseText);
+                        }
+                    }).done(function () {
+                        // TODO: alerts are obsolete, instead use HTML z-layer popup that shows up for 2-3 seconds
+                        alert("Image updated successfully.");
+
+                    }).always(function () {
+                        $("#waitForIt").hide();
+                    });
+                };
+                reader.onerror = function () {
+                    console.log(reader.error);
+                    alert(reader.error);
+                };
+                //reader.readAsDataURL(file); // read file and trigger one of the above handlers
+                reader.readAsBinaryString(file);
+
+                return;
+            });
+
+             /*TEMPORARY: IMG UPDATE*/
+             $('#btnRecipeImg').click(function () {
+
+// get file input value and type
+let file = $("#imgRecipeUpdate").prop('files')[0];
+let mimeTypeVal = file.type;
+
+// read file
+let reader = new FileReader();
+reader.onload = function () {
+    //TODO: get recipe ID
+let id;
+    
+    var recipe = { data: btoa(reader.result), mimeType: mimeTypeVal };
+    $("#waitForIt").show();
+    // NOTE: if currId = 0 then adding, otherwise updating
+    $.ajax({ // FIXME: escape special characters using urlencode
+        url: "/api/recipes/img/" + id, //+ sessionStorage.getItem('username'),
+       // headers: { 'x-auth-username': sessionStorage.getItem('username'), 'x-auth-password': sessionStorage.getItem('password') },
+        type: "PATCH",
+        dataType: "json",
+        data: recipe,
+        error: function (jqxhr, status, errorThrown) {
+            alert("AJAX error: " + jqxhr.responseText);
+        }
+    }).done(function () {
+        // TODO: alerts are obsolete, instead use HTML z-layer popup that shows up for 2-3 seconds
+        alert("Image updated successfully.");
+
+    }).always(function () {
+        $("#waitForIt").hide();
+    });
+};
+reader.onerror = function () {
+    console.log(reader.error);
+    alert(reader.error);
+};
+//reader.readAsDataURL(file); // read file and trigger one of the above handlers
+reader.readAsBinaryString(file);
+
+return;
+});
+
+        });
+    </script>
+</head>
+
+<body>
+    <div id="centerContent">
+        <div id="loginPane">
+            Username: <input type="text" name="username"><br>
+            Password: <input type="password" name="password"><br>
+            <button id="loginButton">Login</button>
+        </div>
+        <div id="registerPane">
+            Email: <input type="text" name="email"><br>
+            Full Name: <input type="text" name="fullName"><br>
+            Username: <input type="text" name="newUsername"><br>
+            Password: <input type="password" name="newPass1"><br>
+            Password (repeated): <input type="password" name="newPass2"><br>
+            
+            <!-- IMAGE UPLOAD -->
+
+            <label class="form-label" for="imgUpload">Upload user photo: </label>
+            <input type="file" class="form-control" id="imgUpload">
+            <button id="registerButton">Register</button>
+        </div>
+    </div>
+
+
+
+    <label class="form-label" for="imgUpdate">Upload user photo: </label>
+    <input type="file" class="form-control" id="imgUpdate">
+    <button id="btnImg">Update Image</button>
+
+    <label class="form-label">Upload recipe photo: </label>
+    <input type="file" class="form-control" id="imgRecipeUpdate">
+    <button id="btnRecipeImg">Update Recipe Image</button>
+
+</body>
+
+</html>
